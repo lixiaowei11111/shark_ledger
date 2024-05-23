@@ -1,30 +1,28 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+shark_ledger:H5 applications that can be used completely offline
 
-Currently, two official plugins are available:
+Technology stack: 
++ build tool: vite  
++ state manager: zustand、useReducer
++ router: react-router
++ storage: indexeddb、File API
++ framework: react
++ router: react-router 
++ ui lib: MUI 
++ style: tailwindcss、emotion
++ visualization: echarts 
++ type checker: typescript 
++ deploy: vercel/github page
++ other: [pwa](https://vite-pwa-org.netlify.app/guide/#scaffolding-your-first-vite-pwa-project)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [] 使用`pwa`提供只需要安装一次就可以完全离线使用功能
+- [] 提供本地账号密码登录,方便一台设备上的多用户数据隔离,暂不提供加密数据功能
+- [] 使用`indexeddb(idb)`存储数据,同时通过`File API`提供保存数据文件到本地文件夹功能
+- [] 提供`excel`或者`json`导入功能(以日期为维度日期,金额,备注,支出,收入)
+- [] 提供相关可视化分析功能
+- [] 使用`vercel`部署,后续支持一键部署
+- [] 支持白天黑夜主题切换
+- [] 优先考虑中文,后续提供多语言本地化支持
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+TODO:
+- [] [颜色主题,定义一套主要颜色](https://mui.com/material-ui/customization/color/)

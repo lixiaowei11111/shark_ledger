@@ -27,3 +27,5 @@ ssl/
 .env.development
 .env.production
 .env.test
+
+dev-dist/
