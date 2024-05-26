@@ -1,10 +1,13 @@
-import { useState, SyntheticEvent, ReactElement } from "react"
-
+import { useState, ReactElement, useEffect } from "react"
+// COMPONENTS
 import { Tabs, Tab } from "@mui/material"
 import Icon from "@/components/Icon"
 import { css } from "@emotion/react"
-import { TabbarValueEnum } from "@/constants"
-import { useNavigate } from "react-router-dom"
+// HOOKS
+import { useNavigate, useLocation } from "react-router-dom"
+// CONSTANTS
+import { TabBarValueEnum, TallyEnum, tabbarValueList } from "@/constants"
+import { routeAliasList } from "@/constants/route"
 
 // css
 const tabCss = {
@@ -31,46 +34,63 @@ const labelCss = css`
 interface TabProps {
   label: ReactElement
   icon: ReactElement
-  value: TabbarValueEnum
+  value: TabBarValueEnum
 }
 
-const Tabbar = () => {
+const tabList: Array<TabProps> = [
+  {
+    label: <span css={labelCss}>明细</span>,
+    icon: <Icon name="ziyuan76" className="text-2xl" />,
+    value: TabBarValueEnum.DETAIL,
+  },
+  {
+    label: <span css={labelCss}>图表</span>,
+    icon: <Icon name="tubiao" className="text-2xl" />,
+    value: TabBarValueEnum.GRAPH,
+  },
+  {
+    label: <span css={labelCss}>记账</span>,
+    icon: <Icon name="jiahao2fill" className="text-2xl text-transparent" />,
+    value: TabBarValueEnum.TALLY,
+  },
+  {
+    label: <span css={labelCss}>发现</span>,
+    icon: <Icon name="faxian" className="text-2xl" />,
+    value: TabBarValueEnum.DISCOVER,
+  },
+  {
+    label: <span css={labelCss}>我的</span>,
+    icon: <Icon name="wode" className="text-2xl" />,
+    value: TabBarValueEnum.MY,
+  },
+]
+
+const TabBar = () => {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const [value, setValue] = useState<TabbarValueEnum>(TabbarValueEnum.DETAIL)
+  const [value, setValue] = useState<TabBarValueEnum>(TabBarValueEnum.DETAIL)
 
-  const handleChange = (_event: SyntheticEvent, newValue: TabbarValueEnum) => {
-    setValue(newValue)
-    navigate(`/main/${newValue}`)
+  useEffect(() => {
+    validateCurrentRoute(location.pathname)
+  }, [location.pathname])
+
+  const handleChange = (val: TabBarValueEnum) => {
+    setValue(val)
+    navigate(
+      `/main/${val !== TabBarValueEnum.TALLY ? val : `${TabBarValueEnum.TALLY}/${TallyEnum.EXPENSE}`}`,
+    )
   }
 
-  const tabList: Array<TabProps> = [
-    {
-      label: <span css={labelCss}>明细</span>,
-      icon: <Icon name="ziyuan76" className="text-2xl" />,
-      value: TabbarValueEnum.DETAIL,
-    },
-    {
-      label: <span css={labelCss}>图表</span>,
-      icon: <Icon name="tubiao" className="text-2xl" />,
-      value: TabbarValueEnum.GRAPH,
-    },
-    {
-      label: <span css={labelCss}>记账</span>,
-      icon: <Icon name="jiahao2fill" className="text-2xl text-transparent" />,
-      value: TabbarValueEnum.TALLY,
-    },
-    {
-      label: <span css={labelCss}>发现</span>,
-      icon: <Icon name="faxian" className="text-2xl" />,
-      value: TabbarValueEnum.DISCOVER,
-    },
-    {
-      label: <span css={labelCss}>我的</span>,
-      icon: <Icon name="wode" className="text-2xl" />,
-      value: TabbarValueEnum.MY,
-    },
-  ]
+  const validateCurrentRoute = (path: string) => {
+    const targetPath = routeAliasList.find(t => path.includes(t))
+    if (targetPath && !targetPath.includes(value)) {
+      const newVal = targetPath.split("/")[2]
+      if (tabbarValueList.some(t => t === newVal)) {
+        handleChange(newVal as TabBarValueEnum)
+      }
+    }
+  }
 
   return (
     <footer className="fixed bottom-0 left-0 w-screen">
@@ -83,7 +103,7 @@ const Tabbar = () => {
             display: "none",
           },
         }}
-        onChange={handleChange}>
+        onChange={(_e, val) => handleChange(val)}>
         {tabList.map((item, index) => {
           return <Tab {...item} key={index} sx={tabCss} />
         })}
@@ -92,10 +112,10 @@ const Tabbar = () => {
         name="jiahao2fill"
         className="fixed text-5xl -translate-x-1/2 left-1/2 bottom-6"
         css={theme => ({ color: theme.palette.primary.main })}
-        onClick={(e: SyntheticEvent) => handleChange(e, TabbarValueEnum.TALLY)}
+        onClick={() => handleChange(TabBarValueEnum.TALLY)}
       />
     </footer>
   )
 }
 
-export default Tabbar
+export default TabBar

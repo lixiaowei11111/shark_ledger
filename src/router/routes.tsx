@@ -1,13 +1,16 @@
 import { useRoutes, Navigate, type RouteObject } from "react-router-dom"
-
 // components
 import MainLayout from "@/layouts/Main"
 import NotFound from "@/components/NotFound"
 import Detail from "@/views/Detail"
 import Graph from "@/views/Graph"
 import Discover from "@/views/Discover"
-import My from "@/views/My"
+import My from "@/views/My" //我的
+
 import Tally from "@/views/Tally"
+import Expense from "@/views/Tally/Expense"
+import Income from "@/views/Tally/Income"
+import TallyConfig from "@/views/Tally/Config"
 
 const routes: RouteObject[] = [
   {
@@ -40,7 +43,25 @@ const routes: RouteObject[] = [
       },
       {
         path: "tally",
+        element: <Navigate to="./expense" />,
+      },
+      {
+        path: "tally",
         element: <Tally />,
+        children: [
+          {
+            path: "expense",
+            element: <Expense />,
+          },
+          {
+            path: "income",
+            element: <Income />,
+          },
+          {
+            path: "config",
+            element: <TallyConfig />,
+          },
+        ],
       },
     ],
   },

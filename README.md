@@ -1,5 +1,5 @@
 
-shark_ledger:H5 applications that can be used completely offline
+shark_ledger:去中心化,离线可用,可本地保存导入,进行图像分析的H5记账应用
 
 Technology stack: 
 + build tool: vite  

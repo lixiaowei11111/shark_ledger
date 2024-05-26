@@ -1,16 +1,22 @@
-import { Outlet } from "react-router-dom"
-import Tabbar from "../Tabbar"
+//HOOKS
 import { useLocation } from "react-router-dom"
-import { TabbarValueEnum } from "@/constants"
+//COMPONENTS
+import { Outlet } from "react-router-dom"
+import TabBar from "../TabBar"
+import NavBar from "../NavBar"
+// CONSTANTS
+import { TabBarValueEnum } from "@/constants"
 const MainLayout = () => {
   const location = useLocation()
 
   return (
-    <main className="w-screen">
-      mainLayout
-      <Outlet />
-      {!location.pathname.includes(TabbarValueEnum.TALLY) ? <Tabbar /> : null}
-    </main>
+    <>
+      <NavBar />
+      <main className="w-screen">
+        <Outlet />
+      </main>
+      {!location.pathname.includes(TabBarValueEnum.TALLY) ? <TabBar /> : null}
+    </>
   )
 }
 

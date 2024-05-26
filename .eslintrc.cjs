@@ -26,6 +26,7 @@ module.exports = {
     "react/react-in-jsx-scope": 0, // react18 中 jsx语法不再需要引入react
     'react/jsx-uses-react': 2,
     'react/jsx-uses-vars': 2,
-    "react/no-unknown-property": 0
+    "react/no-unknown-property": 0,
+    "react-hooks/exhaustive-deps": 1,// 依赖告警关闭
   },
 }
