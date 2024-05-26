@@ -23,9 +23,9 @@ export default defineConfig({
       },
 
       manifest: {
-        name: "shark_ledger",
-        short_name: "shark_ledger",
-        description: "shark_ledger",
+        name: "shark ledger",
+        short_name: "shark ledger",
+        description: "ledger",
         theme_color: "#ffffff",
       },
 
@@ -36,7 +36,7 @@ export default defineConfig({
       },
 
       devOptions: {
-        enabled: true,
+        enabled: false,
         navigateFallback: "index.html",
         suppressWarnings: true,
         type: "module",

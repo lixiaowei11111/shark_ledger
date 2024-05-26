@@ -1,35 +1,74 @@
-import { useState, SyntheticEvent } from "react"
+import { useState, SyntheticEvent, ReactElement } from "react"
 
 import { Tabs, Tab } from "@mui/material"
 import Icon from "@/components/Icon"
+import { css } from "@emotion/react"
+import { TabbarValueEnum } from "@/constants"
+import { useNavigate } from "react-router-dom"
+
+// css
+const tabCss = {
+  "&.Mui-selected": {
+    outline: "none !important",
+  },
+  "&.MuiTabs-flexContainer": {
+    width: "100vw",
+    position: "relative",
+    borderTop: "1px solid #EEE",
+  },
+  "&.MuiButtonBase-root": {
+    minWidth: "20vw",
+    width: "20vw",
+    borderTop: "1px solid #eee",
+  },
+  fontSize: "0.5rem",
+}
+
+const labelCss = css`
+  color: #222 !important;
+`
+// type
+interface TabProps {
+  label: ReactElement
+  icon: ReactElement
+  value: TabbarValueEnum
+}
 
 const Tabbar = () => {
-  const [value, setValue] = useState<string>("detail")
+  const navigate = useNavigate()
 
-  const handleChange = (_event: SyntheticEvent, newValue: string) => {
+  const [value, setValue] = useState<TabbarValueEnum>(TabbarValueEnum.DETAIL)
+
+  const handleChange = (_event: SyntheticEvent, newValue: TabbarValueEnum) => {
     setValue(newValue)
+    navigate(`/main/${newValue}`)
   }
 
-  const tabList = [
+  const tabList: Array<TabProps> = [
     {
-      label: "明细",
-      icon: <Icon name="mingxi" />,
-      value: "detail",
+      label: <span css={labelCss}>明细</span>,
+      icon: <Icon name="ziyuan76" className="text-2xl" />,
+      value: TabbarValueEnum.DETAIL,
     },
     {
-      label: "图表",
-      icon: <Icon name="tubiao1" />,
-      value: "graph",
+      label: <span css={labelCss}>图表</span>,
+      icon: <Icon name="tubiao" className="text-2xl" />,
+      value: TabbarValueEnum.GRAPH,
     },
     {
-      label: "发现",
-      icon: <Icon name="faxian" />,
-      value: "discover",
+      label: <span css={labelCss}>记账</span>,
+      icon: <Icon name="jiahao2fill" className="text-2xl text-transparent" />,
+      value: TabbarValueEnum.TALLY,
     },
     {
-      label: "我的",
-      icon: <Icon name="wode" />,
-      value: "my",
+      label: <span css={labelCss}>发现</span>,
+      icon: <Icon name="faxian" className="text-2xl" />,
+      value: TabbarValueEnum.DISCOVER,
+    },
+    {
+      label: <span css={labelCss}>我的</span>,
+      icon: <Icon name="wode" className="text-2xl" />,
+      value: TabbarValueEnum.MY,
     },
   ]
 
@@ -37,20 +76,24 @@ const Tabbar = () => {
     <footer className="fixed bottom-0 left-0 w-screen">
       <Tabs
         value={value}
-        className="relative"
         variant="fullWidth"
         aria-label="主页底部导航栏"
+        sx={{
+          ".MuiTabs-indicator": {
+            display: "none",
+          },
+        }}
         onChange={handleChange}>
-        {tabList.map((item, index) => (
-          <Tab {...item} key={index} />
-        ))}
-        <Tab
-          className="fixed -translate-x-1/2 left-1/2 bottom-1"
-          value="tally"
-          label="记账"
-          icon={<Icon name="jiahao2fill" />}
-        />
+        {tabList.map((item, index) => {
+          return <Tab {...item} key={index} sx={tabCss} />
+        })}
       </Tabs>
+      <Icon
+        name="jiahao2fill"
+        className="fixed text-5xl -translate-x-1/2 left-1/2 bottom-6"
+        css={theme => ({ color: theme.palette.primary.main })}
+        onClick={(e: SyntheticEvent) => handleChange(e, TabbarValueEnum.TALLY)}
+      />
     </footer>
   )
 }
