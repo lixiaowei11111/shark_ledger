@@ -12,8 +12,11 @@ const relative = (p: string) => {
 // vite.config.ts 不能获取import.meta.env上的环境变量,需要使用loadEnv来获取
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {}, // 更改react内置babel配置
+    }),
     VitePWA({
+      base: "/",
       registerType: "autoUpdate",
       injectRegister: false,
 
@@ -22,21 +25,40 @@ export default defineConfig({
         config: true,
       },
 
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
+        runtimeCaching: [
+          {
+            // https://vite-pwa-org.netlify.app/workbox/generate-sw#cache-external-resources
+            urlPattern: /.*/i,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "all-resource-cache",
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+      },
+      includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
       manifest: {
         name: "shark ledger",
         short_name: "shark ledger",
         description: "ledger",
         theme_color: "#ffffff",
-      },
-
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
-        cleanupOutdatedCaches: true,
-        clientsClaim: true,
+        display: "fullscreen",
       },
 
       devOptions: {
-        enabled: false,
+        enabled: true,
         navigateFallback: "index.html",
         suppressWarnings: true,
         type: "module",

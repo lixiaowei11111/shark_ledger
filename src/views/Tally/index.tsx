@@ -6,7 +6,6 @@ import TallyNavBar from "./components/NavBar"
 // HOOKS
 import { useState, forwardRef, useEffect } from "react"
 import { usePreviousRoute } from "@/hooks/usePreviousRoute"
-
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement
@@ -32,7 +31,6 @@ const Tally = () => {
     }
   }, [])
 
-  console.log(preRoute, "preRoute", prePageRoute)
   const handleClose = () => {
     setOpen(false)
     navigate(prePageRoute)
